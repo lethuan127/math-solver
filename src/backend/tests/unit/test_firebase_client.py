@@ -6,9 +6,11 @@ from app.database.firebase_client import FirebaseClient
 
 
 class TestFirebaseClient:
+    @patch("firebase_admin.storage.bucket")
+    @patch("firebase_admin.firestore.client")
     @patch("firebase_admin.initialize_app")
     @patch("firebase_admin.credentials.Certificate")
-    def setup_method(self, mock_cert, mock_init):
+    def setup_method(self, method, mock_cert, mock_init, mock_firestore, mock_bucket):
         self.client = FirebaseClient()
 
     @patch("firebase_admin.auth.verify_id_token")
@@ -30,17 +32,14 @@ class TestFirebaseClient:
 
         assert result is None
 
-    @patch("firebase_admin.firestore.client")
     @pytest.mark.asyncio
-    async def test_save_solution(self, mock_firestore):
-        mock_db = MagicMock()
+    async def test_save_solution(self):
+        # Mock the document reference
         mock_doc = MagicMock()
         mock_doc.id = "test_doc_id"
-
-        mock_firestore.return_value = mock_db
-        mock_db.collection.return_value.document.return_value.collection.return_value.document.return_value = (
-            mock_doc
-        )
+        
+        # Setup the chain of mocks for the Firestore operations
+        self.client.db.collection.return_value.document.return_value.collection.return_value.document.return_value = mock_doc
 
         problem_data = {"text": "2 + 2 = ?", "solution": "4"}
 
@@ -49,10 +48,9 @@ class TestFirebaseClient:
         assert result == "test_doc_id"
         mock_doc.set.assert_called_once()
 
-    @patch("firebase_admin.firestore.client")
     @pytest.mark.asyncio
-    async def test_get_user_history(self, mock_firestore):
-        mock_db = MagicMock()
+    async def test_get_user_history(self):
+        # Mock the document results
         mock_docs = [MagicMock(), MagicMock()]
         mock_docs[0].to_dict.return_value = {
             "text": "Problem 1",
@@ -65,10 +63,8 @@ class TestFirebaseClient:
         }
         mock_docs[1].id = "doc2"
 
-        mock_firestore.return_value = mock_db
-        mock_db.collection.return_value.document.return_value.collection.return_value.order_by.return_value.limit.return_value.stream.return_value = (
-            mock_docs
-        )
+        # Setup the chain of mocks for the Firestore query
+        self.client.db.collection.return_value.document.return_value.collection.return_value.order_by.return_value.limit.return_value.stream.return_value = mock_docs
 
         result = await self.client.get_user_history("test_user")
 

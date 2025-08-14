@@ -3,6 +3,7 @@ import logging
 
 import pytesseract
 from PIL import Image
+from fastapi import UploadFile
 
 
 class ImageProcessor:
@@ -10,6 +11,40 @@ class ImageProcessor:
         # Configure tesseract path if needed
         # pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
         pass
+
+    async def process_file(self, file: UploadFile) -> dict:
+        """
+        Process uploaded file and extract text
+        """
+        try:
+            # Validate file type
+            if not file.content_type or not file.content_type.startswith('image/'):
+                raise ValueError(f"Invalid file type: {file.content_type}. Only images are supported.")
+            
+            # Read file content
+            file_content = await file.read()
+            
+            # Process the image
+            result = await self.process_image(file_content)
+            return result
+            
+        except Exception as e:
+            logging.error(f"Error processing file: {str(e)}")
+            raise Exception(f"Failed to process file: {str(e)}") from e
+
+    async def process_image(self, image_data: bytes) -> dict:
+        """
+        Process image and extract text with confidence score
+        """
+        try:
+            text = await self.extract_text(image_data)
+            return {
+                "text": text,
+                "confidence": 0.95  # Mock confidence score
+            }
+        except Exception as e:
+            logging.error(f"Error processing image: {str(e)}")
+            raise Exception(f"Failed to process image: {str(e)}") from e
 
     async def extract_text(self, image_data: bytes) -> str:
         """

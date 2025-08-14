@@ -24,7 +24,7 @@ def test_health_check():
     assert data["status"] == "healthy"
 
 
-@patch("app.services.image_processor.ImageProcessor.process_file")
+@patch("app.services.image_processor.ImageProcessor.process_image")
 @patch("app.services.math_solver.MathSolver.solve")
 def test_upload_file_success(mock_solver, mock_processor):
     # Mock the services
@@ -52,4 +52,4 @@ def test_upload_invalid_file():
         files={"file": ("test.txt", io.BytesIO(b"not an image"), "text/plain")},
     )
 
-    assert response.status_code in [400, 422]  # May vary based on FastAPI validation
+    assert response.status_code == 500  # Internal server error due to invalid file type

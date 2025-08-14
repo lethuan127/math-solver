@@ -11,7 +11,7 @@ class MathSolver:
     def __init__(self):
         self.client = openai.AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-    async def solve_problem(self, problem_text: str) -> MathSolution:
+    async def solve(self, problem_text: str) -> MathSolution:
         """
         Solve math problem using OpenAI GPT
         """
@@ -85,3 +85,30 @@ class MathSolver:
                 explanation=f"An error occurred: {str(e)}",
                 confidence=0.0,
             )
+
+    def classify_problem(self, problem_text: str) -> str:
+        """
+        Classify the type of math problem
+        """
+        problem_lower = problem_text.lower()
+        
+        # Check for calculus first (most specific)
+        if any(term in problem_lower for term in ['∫', 'derivative', 'integral', 'limit']):
+            return "calculus"
+        # Check for trigonometry
+        elif any(term in problem_lower for term in ['sin', 'cos', 'tan', '°', 'π']):
+            return "trigonometry"
+        # Check for algebra (variables and equations)
+        elif any(term in problem_lower for term in ['x^', 'x²', 'x2', 'solve for']) or ('x' in problem_lower and '=' in problem_text):
+            return "algebra"
+        # Check for basic arithmetic
+        elif any(op in problem_text for op in ['+', '-', '*', '/', '×', '÷']):
+            return "arithmetic"
+        else:
+            return "general"
+    
+    def format_steps(self, steps: list[str]) -> list[str]:
+        """
+        Format solution steps for display
+        """
+        return [step.strip() for step in steps if step.strip()]
