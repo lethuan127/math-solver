@@ -1,0 +1,42 @@
+# Pre-commit hooks for code quality
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: Ruff Linter
+        entry: uv run ruff check --fix
+        language: system
+        types: [python]
+        require_serial: true
+        
+      - id: ruff-format
+        name: Ruff Formatter
+        entry: uv run ruff format
+        language: system
+        types: [python]
+        require_serial: true
+        
+      - id: black
+        name: Black Formatter
+        entry: uv run black
+        language: system
+        types: [python]
+        require_serial: true
+        
+      - id: mypy
+        name: MyPy Type Checker
+        entry: uv run mypy
+        language: system
+        types: [python]
+        require_serial: true
+        args: ["--ignore-missing-imports"]
+        
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: debug-statements
