@@ -34,7 +34,19 @@ lint: fix format
 
 # Run tests
 test:
-	uv run pytest
+	uv run pytest tests/unit/ tests/integration/ -v
+
+# Run unit tests only
+test-unit:
+	uv run pytest tests/unit/ -v
+
+# Run integration tests only  
+test-integration:
+	uv run pytest tests/integration/ -v
+
+# Run all tests including deepeval
+test-all:
+	uv run pytest tests/ -v
 
 # Type checking with mypy
 typecheck:

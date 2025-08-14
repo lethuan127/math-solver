@@ -13,14 +13,13 @@ dependencies = [
     "pytesseract==0.3.10",
     "openai>=1.50.0",
     "python-dotenv==1.0.0",
-    "pydantic==2.5.0",
-    "pydantic-settings==2.0.3",
+    "pydantic>=2.9.0",
+    "pydantic-settings>=2.5.0",
     "httpx>=0.28.1",
     "aiofiles==23.2.1",
     "pypdf2==3.0.1",
     "pdf2image==1.16.3",
     "anyio>=4.8.0",
-    "google-genai==1.30.0",
 ]
 
 [project.optional-dependencies]
@@ -28,6 +27,7 @@ test = [
     "pytest==7.4.3",
     "pytest-asyncio==0.21.1",
     "pytest-cov==4.1.0",
+    "deepeval==3.3.5",
 ]
 
 [build-system]
@@ -42,10 +42,15 @@ dev-dependencies = [
     "pytest==7.4.3",
     "pytest-asyncio==0.21.1",
     "pytest-cov==4.1.0",
+    "deepeval==3.3.5",
     "ruff==0.1.6",
     "black==23.11.0",
     "mypy==1.7.1",
     "pre-commit==3.6.0",
+    "matplotlib>=3.10.5",
+    "seaborn>=0.13.2",
+    "pandas>=2.3.1",
+    "numpy>=2.3.2",
 ]
 
 

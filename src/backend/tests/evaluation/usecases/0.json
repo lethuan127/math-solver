@@ -1,0 +1,122 @@
+[
+  {
+    "image_file": "1.png",
+    "expected_answer": "63 040"
+  },
+  {
+    "image_file": "2.png",
+    "expected_answer": "35%"
+  },
+  {
+    "image_file": "3.png",
+    "expected_answer": "33/7"
+  },
+  {
+    "image_file": "4.png",
+    "expected_answer": "BE"
+  },
+  {
+    "image_file": "5.png",
+    "expected_answer": "50 000"
+  },
+  {
+    "image_file": "6.png",
+    "expected_answer": "1 1/2 kg"
+  },
+  {
+    "image_file": "7.png",
+    "expected_answer": "0.103"
+  },
+  {
+    "image_file": "8.png",
+    "expected_answer": "∠b and ∠d"
+  },
+  {
+    "image_file": "9.png",
+    "expected_answer": "25°"
+  },
+  {
+    "image_file": "10.png",
+    "expected_answer": "2 : 5"
+  },
+  {
+    "image_file": "11.png",
+    "expected_answer": "40 cm³"
+  },
+  {
+    "image_file": "12.png",
+    "expected_answer": "26 tickets"
+  },
+  {
+    "image_file": "13.png",
+    "expected_answer": "61°"
+  },
+  {
+    "image_file": "14.png",
+    "expected_answer": "20%"
+  },
+  {
+    "image_file": "15.png",
+    "expected_answer": "51"
+  },
+  {
+    "image_file": "16.png",
+    "expected_answer": "56"
+  },
+  {
+    "image_file": "17.png",
+    "expected_answer": "33.7"
+  },
+  {
+    "image_file": "18.png",
+    "expected_answer": "2/15"
+  },
+  {
+    "image_file": "19.png",
+    "expected_answer": "455 slices"
+  },
+  {
+    "image_file": "20.png",
+    "expected_answer": "29"
+  },
+  {
+    "image_file": "21.png",
+    "expected_answer": "18 minutes"
+  },
+  {
+    "image_file": "22.png",
+    "expected_answer": "1.04 m"
+  },
+  {
+    "image_file": "23.png",
+    "expected_answer": "17"
+  },
+  {
+    "image_file": "24.png",
+    "expected_answer": "28\u00b0"
+  },
+  {
+    "image_file": "25.png",
+    "expected_answer": "$32"
+  },    
+  {
+    "image_file": "26.png",
+    "expected_answer": "14 pages"
+  },
+  {
+    "image_file": "27.png",
+    "expected_answer": "59\u00b0"
+  },
+  {
+    "image_file": "28.png",
+    "expected_answer": "$15"
+  },
+  {
+    "image_file": "29.png",
+    "expected_answer": "1.25 litres"
+  },
+  {
+    "image_file": "30.png",
+    "expected_answer": "(i) Not possible to tell. (ii) False."
+  }
+]
