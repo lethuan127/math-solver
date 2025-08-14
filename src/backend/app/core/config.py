@@ -2,9 +2,11 @@ import os
 from functools import lru_cache
 
 from pydantic_settings import BaseSettings
+from dotenv import load_dotenv
 
 
 class Settings(BaseSettings):
+    load_dotenv()
     """Application settings and configuration"""
 
     # API Settings
@@ -24,6 +26,7 @@ class Settings(BaseSettings):
 
     # AI/ML Configuration
     openai_api_key: str = os.getenv("OPENAI_API_KEY", "")
+    gemini_api_key: str = os.getenv("GEMINI_API_KEY", "")
     ocr_service: str = "tesseract"  # or "google_vision"
 
     # File Upload Settings

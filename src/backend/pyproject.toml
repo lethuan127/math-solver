@@ -4,19 +4,23 @@ version = "0.1.0"
 description = "Math problem solver backend API"
 requires-python = ">=3.11"
 dependencies = [
-    "fastapi==0.104.1",
-    "uvicorn[standard]==0.24.0",
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
     "python-multipart==0.0.6",
     "firebase-admin==6.2.0",
     "google-cloud-firestore==2.13.1",
     "pillow==10.1.0",
     "pytesseract==0.3.10",
-    "openai==1.3.5",
+    "openai>=1.50.0",
     "python-dotenv==1.0.0",
     "pydantic==2.5.0",
     "pydantic-settings==2.0.3",
-    "httpx==0.25.2",
+    "httpx>=0.28.1",
     "aiofiles==23.2.1",
+    "pypdf2==3.0.1",
+    "pdf2image==1.16.3",
+    "anyio>=4.8.0",
+    "google-genai==1.30.0",
 ]
 
 [project.optional-dependencies]
