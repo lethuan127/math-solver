@@ -1,11 +1,13 @@
+"""Main FastAPI application with modular architecture."""
+
 import logging
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .api.endpoints import router as api_router
-from .core.config import get_settings
-from .core.utils import setup_logging
+from .modules.math_solving.presentation.endpoints import router as math_solving_router
+from .modules.shared.config import get_settings
+from .modules.shared.utils import setup_logging
 
 # Initialize settings and logging
 settings = get_settings()
@@ -30,11 +32,12 @@ app.add_middleware(
 )
 
 # Include API routes
-app.include_router(api_router, prefix="/api/v1")
+app.include_router(math_solving_router, prefix="/api/v1", tags=["Math Solving"])
 
 
 @app.get("/")
 async def root():
+    """Root endpoint."""
     return {
         "message": "Math Homework Solver API",
         "version": settings.api_version,
@@ -44,8 +47,11 @@ async def root():
 
 @app.get("/health")
 async def health_check():
-    return {
-        "status": "healthy",
-        "environment": settings.environment,
-        "version": settings.api_version,
-    }
+    """Health check endpoint."""
+    return {"status": "healthy"}
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=8000)
