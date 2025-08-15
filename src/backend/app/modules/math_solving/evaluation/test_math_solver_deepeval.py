@@ -55,8 +55,8 @@ class MathAccuracyMetric(BaseMetric):
             # Exact string matching
             score = 1.0 if expected_normalized == actual_normalized else 0.0
         else:
-            # Use LLM to evaluate semantic similarity for math answers
-            score = self._llm_evaluate_math_accuracy(
+            # Use simple string matching for now (avoid LLM calls in sync method)
+            score = self._simple_evaluate_math_accuracy(
                 expected_normalized, actual_normalized
             )
 
@@ -65,6 +65,10 @@ class MathAccuracyMetric(BaseMetric):
         self.success = score >= self.threshold
 
         return score
+    
+    async def a_measure(self, test_case: LLMTestCase) -> float:
+        """Async version of measure method"""
+        return self.measure(test_case)
 
     def _normalize_answer(self, answer: str) -> str:
         """Normalize mathematical answers for comparison"""
@@ -87,16 +91,38 @@ class MathAccuracyMetric(BaseMetric):
 
         return normalized.lower()
 
-    def _llm_evaluate_math_accuracy(self, expected: str, actual: str) -> float:
-        """Use LLM to evaluate mathematical answer accuracy"""
-        # This is a simplified version - you would implement LLM evaluation here
-        # For now, we'll use string similarity as a fallback
-        if expected.lower() == actual.lower():
+    def _simple_evaluate_math_accuracy(self, expected: str, actual: str) -> float:
+        """Simple evaluation of mathematical answer accuracy"""
+        expected_clean = expected.lower().strip()
+        actual_clean = actual.lower().strip()
+        
+        # Exact match
+        if expected_clean == actual_clean:
             return 1.0
-        elif expected.lower() in actual.lower() or actual.lower() in expected.lower():
+        
+        # Check if expected answer is contained in actual
+        if expected_clean in actual_clean:
+            return 0.9
+        
+        # Check if actual answer is contained in expected
+        if actual_clean in expected_clean:
             return 0.8
-        else:
-            return 0.0
+        
+        # Check for numerical equivalence
+        try:
+            expected_num = float(expected_clean.replace(',', '').replace(' ', ''))
+            actual_num = float(actual_clean.replace(',', '').replace(' ', ''))
+            if abs(expected_num - actual_num) < 0.001:  # Close enough for floating point
+                return 1.0
+        except (ValueError, TypeError):
+            pass
+        
+        return 0.0
+    
+    def _llm_evaluate_math_accuracy(self, expected: str, actual: str) -> float:
+        """Use LLM to evaluate mathematical answer accuracy (deprecated)"""
+        # Fallback to simple evaluation
+        return self._simple_evaluate_math_accuracy(expected, actual)
 
     def _generate_reason(self, expected: str, actual: str, score: float) -> str:
         """Generate explanation for the score"""
@@ -212,23 +238,18 @@ class MathSolverEvaluator:
         config = self.config["metrics"]
 
         metrics = [
-            # Custom math accuracy metric
+            # Custom math accuracy metric (main evaluation metric)
             MathAccuracyMetric(
                 threshold=config["custom_math_accuracy"]["threshold"],
                 strict_matching=config["custom_math_accuracy"]["strict_matching"],
                 normalize_answers=config["custom_math_accuracy"]["normalize_answers"],
             ),
+            # Only include metrics that don't require retrieval_context
             # Answer relevancy - how relevant is the answer to the question
             AnswerRelevancyMetric(
                 threshold=config["answer_relevancy"]["threshold"],
                 model=config["answer_relevancy"]["model"],
                 include_reason=config["answer_relevancy"]["include_reason"],
-            ),
-            # Faithfulness - how faithful is the answer to the context
-            FaithfulnessMetric(
-                threshold=config["faithfulness"]["threshold"],
-                model=config["faithfulness"]["model"],
-                include_reason=config["faithfulness"]["include_reason"],
             ),
         ]
 
@@ -283,6 +304,9 @@ class MathSolverEvaluator:
 
 
 # Pytest integration for parallel execution
+@pytest.mark.evaluation
+@pytest.mark.requires_openai
+@pytest.mark.slow
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "case_index", range(30)
@@ -333,6 +357,8 @@ async def test_individual_math_problem(case_index):
         raise
 
 
+@pytest.mark.evaluation
+@pytest.mark.requires_openai
 @pytest.mark.asyncio
 async def test_math_solver_evaluation():
     """Test math solver using DeepEval metrics - sequential version"""
@@ -356,6 +382,9 @@ async def test_math_solver_evaluation():
         print("-" * 30)
 
 
+@pytest.mark.evaluation
+@pytest.mark.requires_openai
+@pytest.mark.slow
 @pytest.mark.asyncio
 async def test_full_math_solver_evaluation():
     """Test math solver on all available test cases"""

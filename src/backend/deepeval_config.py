@@ -17,8 +17,8 @@ DEEPEVAL_CONFIG = {
 
 # Test case configuration
 TEST_CASES_CONFIG = {
-    "usecases_file": "tests/evaluation/usecases/0.json",
-    "images_directory": "tests/evaluation/usecases/",
+    "usecases_file": "app/modules/math_solving/evaluation/usecases/0.json",
+    "images_directory": "app/modules/math_solving/evaluation/usecases/",
     "max_test_cases": None,  # None means all test cases
     "timeout_seconds": 60,
 }

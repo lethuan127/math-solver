@@ -2,15 +2,37 @@
 
 import base64
 import logging
+from typing import Optional
 
 import openai
 from fastapi import UploadFile
+from pydantic import BaseModel, Field
 
 from ...shared.config import get_settings
-from ..domain.entities import MathAnswer
+from ..domain.entities import MathAnswer as DomainMathAnswer
 from ..domain.interfaces import AIService
 
 logger = logging.getLogger(__name__)
+
+
+
+class SolutionStep(BaseModel):
+    """A single step in solving a math problem."""
+
+    step_number: int = Field(None, title="Step Number", description="The step number of the solution")
+    description: str = Field(None, title="Description", description="The description of the solution")
+    calculation: Optional[str] = Field(None, title="Calculation", description="The calculation of the solution")
+
+
+class MathAnswer(BaseModel):
+    """The answer to a math problem."""
+
+    question: str = Field(None, title="Question", description="The question of the math problem")
+    answer_label: Optional[str] = Field(None, title="Answer Label", description="The label of the answer")
+    answer_value: str = Field(None, title="Answer Value", description="The value of the answer")
+    explanation: str = Field(None, title="Explanation", description="The explanation of the answer")
+    steps: list[SolutionStep] = Field(None, title="Steps", description="The steps of the solution")
+    confidence: float = Field(None, title="Confidence", description="The confidence of the answer")
 
 
 class OpenAIMathSolverService(AIService):
@@ -20,7 +42,7 @@ class OpenAIMathSolverService(AIService):
         self.settings = get_settings()
         self.client = openai.AsyncOpenAI(api_key=self.settings.openai_api_key)
 
-    async def solve_problem(self, image_file: UploadFile) -> MathAnswer:
+    async def solve_problem(self, image_file: UploadFile) -> DomainMathAnswer:
         """
         Solve math problem using OpenAI GPT with vision capabilities.
 
@@ -51,7 +73,7 @@ class OpenAIMathSolverService(AIService):
             # In reality, you'd need to adapt this to the actual OpenAI API
             response = await self.client.responses.parse(
                 model="gpt-5",
-                messages=[
+                input=[
                     {
                         "role": "system",
                         "content": system_prompt,
@@ -59,12 +81,10 @@ class OpenAIMathSolverService(AIService):
                     {
                         "role": "user",
                         "content": [
-                            {"type": "text", "text": "Solve this math problem"},
+                            {"type": "input_text", "text": "Solve this math problem"},
                             {
-                                "type": "image_url",
-                                "image_url": {
-                                    "url": f"data:{image_file.content_type};base64,{file_base64}"
-                                },
+                                "type": "input_image",
+                                "image_url": f"data:{image_file.content_type};base64,{file_base64}"
                             },
                         ],
                     },
@@ -74,12 +94,23 @@ class OpenAIMathSolverService(AIService):
 
             answer = response.output_parsed
 
-            return answer
+            return DomainMathAnswer(
+                question=answer.question,
+                answer_label=answer.answer_label,
+                answer_value=answer.answer_value,
+                explanation=answer.explanation,
+                steps=[SolutionStep(
+                    step_number=step.step_number,
+                    description=step.description,
+                    calculation=step.calculation,
+                ) for step in answer.steps],
+                confidence=answer.confidence,
+            )
 
         except Exception as e:
             logger.error(f"Error solving math problem: {str(e)}")
             # Return fallback response
-            return MathAnswer(
+            return DomainMathAnswer(
                 question="Math problem from uploaded image",
                 answer_label=None,
                 answer_value="Unable to solve problem",
