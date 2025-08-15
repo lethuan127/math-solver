@@ -1,7 +1,5 @@
 import base64
-import json
 import logging
-import os
 
 from fastapi import UploadFile
 import openai

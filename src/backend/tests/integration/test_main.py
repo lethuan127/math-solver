@@ -24,11 +24,22 @@ def test_health_check():
     assert data["status"] == "healthy"
 
 
-@patch("app.services.image_processor.ImageProcessor.process_image")
 @patch("app.services.math_solver.MathSolver.solve")
-def test_upload_file_success(mock_solver, mock_processor):
-    # Mock the services
-    mock_processor.return_value = {"text": "2 + 2 = ?", "confidence": 0.95}
+def test_solve_problem_success(mock_solver):
+    from app.models.problem import ProblemResponse, Answer, SolutionStep
+    
+    # Mock the math solver
+    mock_answer = Answer(
+        question="What is 2 + 2?",
+        answer_value="4",
+        explanation="Simple addition",
+        steps=[SolutionStep(step_number=1, description="Add 2 + 2", calculation="2 + 2 = 4")],
+        confidence=0.95
+    )
+    mock_solver.return_value = ProblemResponse(
+        question="What is 2 + 2?",
+        answer=mock_answer
+    )
 
     # Create a test image
     img = Image.new("RGB", (100, 100), color="white")
@@ -37,18 +48,18 @@ def test_upload_file_success(mock_solver, mock_processor):
     img_bytes.seek(0)
 
     response = client.post(
-        "/api/v1/upload", files={"file": ("test.png", img_bytes, "image/png")}
+        "/api/v1/solve", files={"file": ("test.png", img_bytes, "image/png")}
     )
 
     assert response.status_code == 200
     data = response.json()
-    assert "message" in data
-    assert "content" in data
+    assert "question" in data
+    assert "answer" in data
 
 
-def test_upload_invalid_file():
+def test_solve_invalid_file():
     response = client.post(
-        "/api/v1/upload",
+        "/api/v1/solve",
         files={"file": ("test.txt", io.BytesIO(b"not an image"), "text/plain")},
     )
 

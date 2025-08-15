@@ -26,18 +26,13 @@ class Settings(BaseSettings):
 
     # AI/ML Configuration
     openai_api_key: str = os.getenv("OPENAI_API_KEY", "")
-    gemini_api_key: str = os.getenv("GEMINI_API_KEY", "")
-    ocr_service: str = "tesseract"  # or "google_vision"
-
-    # File Upload Settings
-    max_file_size: int = 10 * 1024 * 1024  # 10MB
-    allowed_file_types: list = [".jpg", ".jpeg", ".png", ".pdf"]
 
     # CORS Settings
     allowed_origins: list = ["http://localhost:3000", "http://localhost:8080"]
 
     class Config:
         env_file = ".env"
+        extra = "ignore"  # Ignore extra environment variables
 
 
 @lru_cache

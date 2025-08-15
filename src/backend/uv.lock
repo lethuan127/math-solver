@@ -10,15 +10,6 @@ resolution-markers = [
 ]
 
 [[package]]
-name = "aiofiles"
-version = "23.2.1"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/af/41/cfed10bc64d774f497a86e5ede9248e1d062db675504b41c320954d99641/aiofiles-23.2.1.tar.gz", hash = "sha256:84ec2218d8419404abcb9f0c02df3f34c6e0a68ed41072acfb1cef5cbc29051a", size = 32072 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/c5/19/5af6804c4cc0fed83f47bff6e413a98a36618e7d40185cd36e69737f3b0e/aiofiles-23.2.1-py3-none-any.whl", hash = "sha256:19297512c647d4b27a2cf7c34caa7e405c0d60b5560618a29a9fe027b18b0107", size = 15727 },
-]
-
-[[package]]
 name = "aiohappyeyeballs"
 version = "2.6.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1318,19 +1309,12 @@ name = "math-solver-backend"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "aiofiles" },
-    { name = "anyio" },
     { name = "fastapi" },
     { name = "firebase-admin" },
     { name = "google-cloud-firestore" },
-    { name = "httpx" },
     { name = "openai" },
-    { name = "pdf2image" },
-    { name = "pillow" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
-    { name = "pypdf2" },
-    { name = "pytesseract" },
     { name = "python-dotenv" },
     { name = "python-multipart" },
     { name = "uvicorn", extra = ["standard"] },
@@ -1362,20 +1346,13 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "aiofiles", specifier = "==23.2.1" },
-    { name = "anyio", specifier = ">=4.8.0" },
     { name = "deepeval", marker = "extra == 'test'", specifier = "==3.3.5" },
     { name = "fastapi", specifier = ">=0.115.0" },
     { name = "firebase-admin", specifier = "==6.2.0" },
     { name = "google-cloud-firestore", specifier = "==2.13.1" },
-    { name = "httpx", specifier = ">=0.28.1" },
     { name = "openai", specifier = ">=1.50.0" },
-    { name = "pdf2image", specifier = "==1.16.3" },
-    { name = "pillow", specifier = "==10.1.0" },
     { name = "pydantic", specifier = ">=2.9.0" },
     { name = "pydantic-settings", specifier = ">=2.5.0" },
-    { name = "pypdf2", specifier = "==3.0.1" },
-    { name = "pytesseract", specifier = "==0.3.10" },
     { name = "pytest", marker = "extra == 'test'", specifier = "==7.4.3" },
     { name = "pytest-asyncio", marker = "extra == 'test'", specifier = "==0.21.1" },
     { name = "pytest-cov", marker = "extra == 'test'", specifier = "==4.1.0" },
@@ -1906,18 +1883,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pdf2image"
-version = "1.16.3"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "pillow" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/b3/96/ad8331752aab6af890151efeee9d35a47c019502a51be5ff3b4791083695/pdf2image-1.16.3.tar.gz", hash = "sha256:74208810c2cef4d9e347769b8e62a52303982ddb4f2dfd744c7ab4b940ae287e", size = 12891 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/e2/8c/37a7467d88c47e435429c147020c2fb53206fabfc44b8b72f9728e79ce1a/pdf2image-1.16.3-py3-none-any.whl", hash = "sha256:b6154164af3677211c22cbb38b2bd778b43aca02758e962fe1e231f6d3b0e380", size = 11548 },
-]
-
-[[package]]
 name = "pillow"
 version = "10.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2268,28 +2233,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/bb/22/f1129e69d94ffff626bdb5c835506b3a5b4f3d070f17ea295e12c2c6f60f/pyparsing-3.2.3.tar.gz", hash = "sha256:b9c13f1ab8b3b542f72e28f634bad4de758ab3ce4546e4301970ad6fa77c38be", size = 1088608 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/05/e7/df2285f3d08fee213f2d041540fa4fc9ca6c2d44cf36d3a035bf2a8d2bcc/pyparsing-3.2.3-py3-none-any.whl", hash = "sha256:a749938e02d6fd0b59b356ca504a24982314bb090c383e3cf201c95ef7e2bfcf", size = 111120 },
-]
-
-[[package]]
-name = "pypdf2"
-version = "3.0.1"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/9f/bb/18dc3062d37db6c491392007dfd1a7f524bb95886eb956569ac38a23a784/PyPDF2-3.0.1.tar.gz", hash = "sha256:a74408f69ba6271f71b9352ef4ed03dc53a31aa404d29b5d31f53bfecfee1440", size = 227419 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/8e/5e/c86a5643653825d3c913719e788e41386bee415c2b87b4f955432f2de6b2/pypdf2-3.0.1-py3-none-any.whl", hash = "sha256:d16e4205cfee272fbdc0568b68d82be796540b1537508cef59388f839c191928", size = 232572 },
-]
-
-[[package]]
-name = "pytesseract"
-version = "0.3.10"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "packaging" },
-    { name = "pillow" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/f0/f1/e34221d3b870fb3b6b38a5843ad2b802bdc85c222c7c49555b72e59eb52b/pytesseract-0.3.10.tar.gz", hash = "sha256:f1c3a8b0f07fd01a1085d451f5b8315be6eec1d5577a6796d46dc7a62bd4120f", size = 13560 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/c5/54/ec007336f38d2d4ce61f3544af3e6855dacbf04a1ac8294f10cabe81146f/pytesseract-0.3.10-py3-none-any.whl", hash = "sha256:8f22cc98f765bf13517ead0c70effedb46c153540d25783e04014f28b55a5fc6", size = 14234 },
 ]
 
 [[package]]

@@ -2,9 +2,6 @@ from pydantic import BaseModel, Field
 from typing import Optional
 
 
-class ProblemRequest(BaseModel):
-    image_data: str  # Base64 encoded image
-
 class SolutionStep(BaseModel):
     step_number: int
     description: str
