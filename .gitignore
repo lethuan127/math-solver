@@ -92,6 +92,9 @@ unlinked_spec.ds
 .DS_Store
 Thumbs.db
 
+# Node.js
+node_modules/
+
 # Logs
 logs
 *.log
