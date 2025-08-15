@@ -12,10 +12,10 @@ module.exports = {
     // Subject should be lower case (disabled for flexibility)
     'subject-case': [0],
     // Header max length
-    'header-max-length': [2, 'always', 72],
+    'header-max-length': [2, 'always', 160],
     // Body max line length
-    'body-max-line-length': [2, 'always', 100],
+    'body-max-line-length': [2, 'always', 160],
     // Footer max line length
-    'footer-max-line-length': [2, 'always', 100],
+    'footer-max-line-length': [2, 'always', 160],
   },
 };
