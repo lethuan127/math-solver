@@ -10,7 +10,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from tests.evaluation.test_math_solver_deepeval import MathSolverEvaluator
+from test_math_solver_deepeval import MathSolverEvaluator
 
 
 class EvaluationRunner:

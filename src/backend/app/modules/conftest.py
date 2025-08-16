@@ -12,7 +12,7 @@ os.environ["DEBUG"] = "true"
 os.environ["FIREBASE_PROJECT_ID"] = "test-project"
 os.environ["FIREBASE_PRIVATE_KEY"] = "test-key"
 os.environ["FIREBASE_CLIENT_EMAIL"] = "test@test.com"
-os.environ["OPENAI_API_KEY"] = "test-key"
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY", "test-key")
 
 
 @pytest.fixture(scope="session")
