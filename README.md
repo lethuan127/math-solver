@@ -4,15 +4,15 @@ A comprehensive full-stack application that helps students solve mathematics hom
 
 ## 🏗️ Architecture Overview
 
-This application follows a modern microservices architecture with the following components:
+This project is a modular full-stack application with the following components:
 
 - **Frontend**: Flutter cross-platform mobile application
-- **Backend**: FastAPI REST API with Python 3.11+
+- **Backend**: FastAPI REST API (Python 3.11+)
 - **Database**: Firebase Firestore for data persistence
-- **AI/ML**: OpenAI GPT-4 Vision for mathematical problem solving
-- **Infrastructure**: Docker containers with Nginx reverse proxy
-- **Package Management**: UV for Python dependency management [[memory:6195598]]
-- **Testing**: Comprehensive test suite with DeepEval for AI model evaluation
+- **AI/ML**: OpenAI API for mathematical problem solving
+- **Infrastructure**: Docker containers, optional Nginx reverse proxy
+- **Package Management**: UV for Python dependency management
+- **Testing**: Pytest suite and DeepEval for AI evaluation
 
 ## 📁 Project Structure
 
@@ -22,25 +22,18 @@ Mini-project/
 │   ├── backend/                        # FastAPI Backend Service
 │   │   ├── app/
 │   │   │   ├── main.py                 # FastAPI application entry point
-│   │   │   ├── api/
-│   │   │   │   └── endpoints.py        # REST API endpoints
-│   │   │   ├── core/
-│   │   │   │   ├── config.py           # Application configuration
-│   │   │   │   ├── middleware.py       # Custom middleware
-│   │   │   │   └── utils.py            # Utility functions
-│   │   │   ├── database/
-│   │   │   │   └── firebase_client.py  # Firebase integration
-│   │   │   ├── models/
-│   │   │   │   └── problem.py          # Pydantic data models
-│   │   │   └── services/
-│   │   │       └── math_solver.py      # AI problem solving service
-│   │   ├── tests/                      # Comprehensive test suite
-│   │   │   ├── evaluation/             # AI model evaluation tests
-│   │   │   │   ├── test_math_solver_deepeval.py
-│   │   │   │   ├── metrics.py          # Custom evaluation metrics
-│   │   │   │   └── usecases/           # Test cases with 30 math problems
-│   │   │   ├── integration/            # Integration tests
-│   │   │   └── unit/                   # Unit tests
+│   │   │   ├── modules/                # Modular DDD-style structure
+│   │   │   │   ├── auth/
+│   │   │   │   │   ├── domain/
+│   │   │   │   │   └── infrastructure/ # Firebase auth service
+│   │   │   │   ├── math_solving/
+│   │   │   │   │   ├── application/    # DTOs and use cases
+│   │   │   │   │   ├── domain/         # Entities and interfaces
+│   │   │   │   │   ├── infrastructure/ # OpenAI service, repository
+│   │   │   │   │   └── presentation/   # API endpoints
+│   │   │   │   └── shared/              # Config, DI container, Firebase client, utils
+│   │   ├── tests/                      # Backend tests (integration, e2e harness)
+│   │   ├── docs/                       # Backend docs
 │   │   ├── pyproject.toml              # UV project configuration
 │   │   ├── uv.lock                     # UV lock file
 │   │   └── Dockerfile                  # Backend container configuration
@@ -54,13 +47,13 @@ Mini-project/
 │       ├── deploy.sh                   # Automated deployment script
 │       └── setup.sh                    # Environment setup script
 │
-├── firebase-config/                    # Firebase configuration files
-├── ssl/                                # SSL certificates for HTTPS
+├── firebase-config/                    # (Optional) Firebase files for container mounts
+├── ssl/                                # SSL certificates for HTTPS (for Nginx)
 ├── docker-compose.yml                  # Multi-container orchestration
 ├── nginx.conf                          # Nginx reverse proxy configuration
-├── package.json                        # Node.js dependencies (CommitLint)
-├── commitlint.config.js                # Git commit linting configuration
-└── behavioural_questions.md            # Interview assessment responses
+├── package.json                        # Node.js tooling (CommitLint/Husky)
+├── commitlint.config.js                # Conventional commit linting configuration
+└── behavioural_questions.md            # Assessment responses
 ```
 
 ## 🚀 Key Features
@@ -78,14 +71,14 @@ Mini-project/
 - **⚡ High Performance**: Async/await patterns throughout the backend
 - **🔄 Real-time Updates**: Firebase Firestore real-time data synchronization
 - **🛡️ Security**: CORS configuration, input validation, and secure API endpoints
-- **📊 Comprehensive Testing**: Unit, integration, and AI model evaluation tests
-- **🐳 Containerization**: Full Docker support with multi-stage builds
+- **📊 Comprehensive Testing**: Integration and AI evaluation tests
+- **🐳 Containerization**: Docker support with optional Nginx reverse proxy
 - **🔍 Code Quality**: Linting with Ruff, formatting with Black, type checking with MyPy
 - **📈 Monitoring**: Health check endpoints and structured logging
 
 ### AI/ML Capabilities
 - **🧠 Advanced OCR**: Text extraction from mathematical images
-- **🎯 High Accuracy**: Custom evaluation metrics with DeepEval framework
+- **🎯 Evaluation**: Custom metrics with DeepEval framework
 - **📋 Comprehensive Test Suite**: 30 diverse math problems for model validation
 - **🔄 Parallel Testing**: Optimized test execution for faster feedback
 - **📊 Performance Metrics**: Answer relevancy, faithfulness, and custom math accuracy scoring
@@ -95,11 +88,11 @@ Mini-project/
 ### Backend Technologies
 - **FastAPI 0.115.0+**: Modern, fast web framework with automatic API documentation
 - **Python 3.11+**: Latest Python features with enhanced performance
-- **OpenAI GPT-4 Vision**: State-of-the-art multimodal AI for problem solving
+- **OpenAI Python SDK**: AI integration for problem solving
 - **Firebase Admin SDK 6.2.0**: Authentication, database, and storage integration
-- **UV**: Modern Python package manager for faster dependency resolution [[memory:6195598]]
+- **UV**: Modern Python package manager for faster dependency resolution
 - **Pydantic 2.9.0+**: Data validation and serialization with Python type hints
-- **Uvicorn**: Lightning-fast ASGI server with auto-reload capabilities
+- **Uvicorn**: ASGI server with auto-reload in development
 
 ### Frontend Technologies
 - **Flutter 3.10.0+**: Google's UI toolkit for cross-platform development
@@ -116,24 +109,23 @@ Mini-project/
 
 ### Infrastructure & DevOps
 - **Docker & Docker Compose**: Containerization and orchestration
-- **Nginx**: High-performance reverse proxy and load balancer
-- **Redis 7**: Caching and session management
+- **Nginx (optional)**: Reverse proxy and TLS termination
 - **SSL/TLS**: Secure HTTPS configuration
 
 ### Development & Testing
 - **DeepEval 3.3.5**: AI model evaluation framework
-- **Pytest**: Comprehensive testing framework with async support
-- **Ruff**: Fast Python linter with extensive rule coverage
-- **Black**: Uncompromising Python code formatter
-- **MyPy**: Static type checking for Python
+- **Pytest**: Testing framework with async support
+- **Ruff**: Fast Python linter
+- **Black**: Code formatter
+- **MyPy**: Static type checking
 - **CommitLint**: Conventional commit message linting
-- **Husky**: Git hooks for automated quality checks
+- **Husky**: Git hooks (run `npm run prepare` once)
 
 ## 📱 API Documentation
 
 ### Core Endpoints
 
-#### `POST /api/v1/solve`
+#### `POST /api/v1/solve` (requires Firebase auth)
 Solve a mathematical problem from an uploaded image.
 
 **Request:**
@@ -141,6 +133,8 @@ Solve a mathematical problem from an uploaded image.
 - **Content-Type**: multipart/form-data
 - **Body**: Image file (PNG, JPG, JPEG)
 - **Max File Size**: 10MB
+
+Include header: `Authorization: Bearer <FIREBASE_ID_TOKEN>`
 
 **Response:**
 ```json
@@ -163,8 +157,8 @@ Solve a mathematical problem from an uploaded image.
 }
 ```
 
-#### `GET /api/v1/history`
-Retrieve user's solution history.
+#### `GET /api/v1/history` (requires Firebase auth)
+Retrieve the authenticated user's solution history.
 
 **Parameters:**
 - `user_id` (string): Firebase user ID
@@ -183,8 +177,8 @@ Retrieve user's solution history.
 }
 ```
 
-#### `DELETE /api/v1/history/{problem_id}`
-Delete a specific problem from history.
+#### `DELETE /api/v1/history/{problem_id}` (requires Firebase auth)
+Delete a specific problem from the authenticated user's history.
 
 **Parameters:**
 - `problem_id` (string): Problem identifier
@@ -196,9 +190,7 @@ Health check endpoint for monitoring.
 **Response:**
 ```json
 {
-  "status": "healthy",
-  "environment": "development",
-  "version": "1.0.0"
+  "status": "healthy"
 }
 ```
 
@@ -208,9 +200,9 @@ Health check endpoint for monitoring.
 - **Python 3.11+**
 - **Flutter SDK 3.10.0+**
 - **Docker & Docker Compose**
-- **UV Package Manager** [[memory:6195598]]
+- **UV Package Manager**
 - **Firebase Project** with Firestore and Storage enabled
-- **OpenAI API Key** with GPT-4 Vision access
+- **OpenAI API Key**
 
 ### Backend Setup
 
@@ -220,7 +212,7 @@ Health check endpoint for monitoring.
    cd Mini-project/src/backend
    ```
 
-2. **Install UV** (if not already installed) [[memory:6195598]]
+2. **Install UV** (if not already installed)
    ```bash
    curl -LsSf https://astral.sh/uv/install.sh | sh
    ```
@@ -231,14 +223,13 @@ Health check endpoint for monitoring.
    ```
 
 4. **Environment Configuration**
-   ```bash
-   cp .env.example .env
-   # Configure the following variables:
-   # OPENAI_API_KEY=your_openai_api_key
-   # FIREBASE_PROJECT_ID=your_firebase_project_id
-   # FIREBASE_PRIVATE_KEY=your_firebase_private_key
-   # FIREBASE_CLIENT_EMAIL=your_firebase_client_email
-   # FIREBASE_STORAGE_BUCKET=your_storage_bucket
+   Create a `.env` file in `src/backend` with:
+   ```env
+   OPENAI_API_KEY=your_openai_api_key
+   FIREBASE_PROJECT_ID=your_firebase_project_id
+   FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"  # note escaped newlines
+   FIREBASE_CLIENT_EMAIL=your_service_account_email
+   FIREBASE_STORAGE_BUCKET=your_bucket_name
    ```
 
 5. **Run Development Server**
@@ -269,7 +260,7 @@ Health check endpoint for monitoring.
 
 ### Docker Deployment
 
-1. **Start All Services**
+1. **Start Services**
    ```bash
    docker-compose up -d --build
    ```
@@ -301,17 +292,14 @@ uv run pytest --cov=app --cov-report=html
 
 **Run AI Model Evaluation:**
 ```bash
-uv run pytest tests/evaluation/test_math_solver_deepeval.py -v
+uv run pytest app/modules/math_solving/evaluation/test_math_solver_deepeval.py -v
 ```
 
-**Parallel Test Execution:**
-```bash
-uv run pytest tests/evaluation/test_math_solver_deepeval.py::test_individual_math_problem -n 4
-```
+Note: parallel execution requires `pytest-xdist` which is not included by default.
 
 ### Test Coverage
 
-The application includes comprehensive testing across multiple layers:
+The application includes testing across multiple layers:
 
 - **Unit Tests**: Individual component testing
 - **Integration Tests**: API endpoint testing
@@ -329,7 +317,7 @@ The AI model is evaluated using:
 
 ## 📊 Performance & Monitoring
 
-### Key Performance Indicators
+### Key Performance Indicators (targets)
 - **Response Time**: Average API response time < 5 seconds
 - **Accuracy**: Mathematical problem solving accuracy > 85%
 - **Availability**: 99.9% uptime target
@@ -353,9 +341,7 @@ The AI model is evaluated using:
 - `FIREBASE_STORAGE_BUCKET`: Firebase storage bucket name
 
 **Optional:**
-- `GEMINI_API_KEY`: Google Gemini API key (future integration)
 - `DEEPEVAL_API_KEY`: DeepEval cloud features API key
-- `DEEPEVAL_MAX_WORKERS`: Parallel test execution workers (default: 4)
 - `DEBUG`: Enable debug mode (default: true)
 
 ### Firebase Setup
@@ -391,18 +377,18 @@ The AI model is evaluated using:
 
 ### Production Deployment
 
-1. **Build Production Images**
+1. **Build & Run**
    ```bash
-   docker-compose -f docker-compose.prod.yml build
+   docker-compose up -d --build
    ```
 
-2. **Deploy to Production**
+2. **Deploy with Script (optional)**
    ```bash
    ./src/scripts/deploy.sh
    ```
 
-3. **SSL Configuration**
-   - Place SSL certificates in `ssl/` directory
+3. **SSL Configuration (if using Nginx)**
+   - Place SSL certificates in `ssl/`
    - Update `nginx.conf` for HTTPS configuration
 
 ### Cloud Deployment Options
